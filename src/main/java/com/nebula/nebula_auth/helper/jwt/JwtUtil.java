@@ -3,13 +3,14 @@ package com.nebula.nebula_auth.helper.jwt;
 import com.nebula.nebula_auth.helper.jwt.dto.JwtDTO;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtUtil {
@@ -22,15 +23,29 @@ public class JwtUtil {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
     /** token 에서 만료 시간 추출 */
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+
+    /** token Claim 에서 권한정보 가져오기 */
+    public List<? extends GrantedAuthority> extractGrantedAuthority(String token){
+        Claims claims = extractAllClaims(token);
+        if(claims.get("roles")==null){
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
+        return Arrays.stream(claims.get("roles").toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
     /** token 에서 clameResolver(function) 를 통해 Claim 추출 -> 토큰의 subject 와 expiration 추출 시 사용 */
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     /** token 의 Claim body 추출 */
     private Claims extractAllClaims(String token) {
         try {
@@ -40,10 +55,12 @@ public class JwtUtil {
             return e.getClaims();
         }
     }
+
     /** token Claim 의 expiration이 현재 시간보다 이전인지 확인  */
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
+
     /** JwtDTO (id, username, roles) 를 통해 만든 토큰을 반환 */
     public String generateToken(JwtDTO jwtDTO) {
 
@@ -55,6 +72,7 @@ public class JwtUtil {
 
         return token;
     }
+
     /** Map type의 claims, subject(username)으로 토큰 스트링을 생성 */
     private String createToken(Map<String, Object> claims, String subject) {
 
@@ -65,6 +83,7 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * accessExpireSecond))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
+
     /** 토큰의 유효성 검사 */
     public Boolean validateToken(String token, UserDetails userDetails) {
         try {
