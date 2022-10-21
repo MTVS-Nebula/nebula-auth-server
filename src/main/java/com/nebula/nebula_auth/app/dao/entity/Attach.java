@@ -3,7 +3,7 @@ package com.nebula.nebula_auth.app.dao.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "TBL_ATTACH")
+@Table(name = "TBL_ATTACH", schema = "file")
 @SequenceGenerator(
         name = "SEQ_ATTACH_ID_GENERATOR",
         sequenceName = "SEQ_ATTACH_ID",

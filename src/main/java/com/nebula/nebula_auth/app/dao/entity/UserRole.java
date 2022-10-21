@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TBL_USER_ROLE")
+@Table(name = "TBL_USER_ROLE", schema = "user")
 public class UserRole {
     @EmbeddedId
     private UserRoleId id;
