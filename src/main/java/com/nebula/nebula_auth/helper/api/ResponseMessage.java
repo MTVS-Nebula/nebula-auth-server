@@ -2,7 +2,7 @@ package com.nebula.nebula_auth.helper.api;
 
 import java.util.Map;
 
-abstract public class ResponseMessage {
+public class ResponseMessage {
     private int httpStatus;
     private String message;
 
