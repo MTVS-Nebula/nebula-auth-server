@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "TBL_USER", schema = "user")
+@Table(name = "TBL_USER", schema = "users")
 @SequenceGenerator(
         name = "SEQ_USER_ID_GENERATOR",
         sequenceName = "SEQ_USER_ID",
