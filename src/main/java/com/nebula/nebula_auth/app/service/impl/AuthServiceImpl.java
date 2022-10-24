@@ -9,8 +9,8 @@ import com.nebula.nebula_auth.app.dao.repository.LoginLogRepository;
 import com.nebula.nebula_auth.app.dao.repository.RoleRepository;
 import com.nebula.nebula_auth.app.dao.repository.UserRepository;
 import com.nebula.nebula_auth.app.dao.repository.UserRoleRepository;
-import com.nebula.nebula_auth.app.dto.LoginDTO;
-import com.nebula.nebula_auth.app.dto.SignUpDTO;
+import com.nebula.nebula_auth.app.dto.auth.LoginDTO;
+import com.nebula.nebula_auth.app.dto.auth.SignUpDTO;
 import com.nebula.nebula_auth.app.service.AuthService;
 import com.nebula.nebula_auth.helper.jwt.JwtUtil;
 import com.nebula.nebula_auth.helper.jwt.dto.JwtDTO;
@@ -76,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
         User user = new User(
                 0, signUpDTO.getUsername(), passwordEncoder.encode(signUpDTO.getPassword()),
                 signUpDTO.getEmail(), new Date((new java.util.Date().getTime())),
-                "N", null, null
+                "N", null
         );
         userRepository.save(user);
         return user;

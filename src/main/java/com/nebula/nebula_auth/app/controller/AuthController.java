@@ -1,7 +1,7 @@
 package com.nebula.nebula_auth.app.controller;
 
-import com.nebula.nebula_auth.app.dto.LoginDTO;
-import com.nebula.nebula_auth.app.dto.SignUpDTO;
+import com.nebula.nebula_auth.app.dto.auth.LoginDTO;
+import com.nebula.nebula_auth.app.dto.auth.SignUpDTO;
 import com.nebula.nebula_auth.app.service.AuthService;
 import com.nebula.nebula_auth.helper.api.ResponseMessage;
 import com.nebula.nebula_auth.helper.api.ResultResponseMessage;
