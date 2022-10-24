@@ -20,25 +20,26 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
-    @Value("${jwt.header}")
-    private static String headerKey;
-    @Value("${jwt.prefix}")
-    private static String prefix;
+    private final String headerKey;
+    private final String prefix;
 
 
     @Autowired
-    public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
+    public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService, @Value("${jwt.header}") String headerKey, @Value("${jwt.prefix}") String prefix) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+        this.headerKey = headerKey;
+        this.prefix = prefix;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try {
+            System.out.println("do filter");
             String token = resolveToken(httpServletRequest);
             setSecurityAuthentication(token);
         } catch (RuntimeException e){
-
+//            throw new RuntimeException("Security Filter 오류");
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
@@ -49,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if(bearerToken.startsWith(prefix + " ")){
             return bearerToken.substring(7);
         } else {
-            throw new RuntimeException("Bearer Token Error");
+            return null;
         }
     }
 
@@ -68,6 +69,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if(username != null){
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if(jwtUtil.validateToken(token, userDetails)){
+                System.out.println(new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
                 return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             } else {
                 throw new RuntimeException("token is not valid");
