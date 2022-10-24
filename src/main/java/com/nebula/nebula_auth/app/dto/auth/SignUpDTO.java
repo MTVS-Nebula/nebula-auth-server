@@ -1,4 +1,4 @@
-package com.nebula.nebula_auth.app.dto;
+package com.nebula.nebula_auth.app.dto.auth;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
