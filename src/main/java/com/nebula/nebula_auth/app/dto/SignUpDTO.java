@@ -1,8 +1,14 @@
 package com.nebula.nebula_auth.app.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class SignUpDTO {
+    @NotBlank(message = "username 이 공백입니다.")
     private String username;
+    @NotBlank(message = "password 가 공백입니다")
     private String password;
+    @Email(message = "email 형식이 맞지 않습니다.")
     private String email;
 
     public SignUpDTO() {
