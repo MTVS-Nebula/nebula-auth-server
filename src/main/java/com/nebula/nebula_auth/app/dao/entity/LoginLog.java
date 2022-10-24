@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "TBL_LOGIN_LOG", schema = "user")
+@Table(name = "TBL_LOGIN_LOG", schema = "users")
 @SequenceGenerator(
         name = "SEQ_LOGIN_LOG_ID_GENERATOR",
         sequenceName = "SEQ_LOGIN_LOG",
