@@ -30,14 +30,11 @@ public class User {
     private String isDeleted;
     @Column(name = "DELETED_DATE")
     private Date deletedDate;
-    @OneToOne
-    @JoinColumn(name = "ATTACH_ID")
-    private Attach profileImg;
 
     public User() {
     }
 
-    public User(int id, String username, String password, String email, Date joinDate, String isDeleted, Date deletedDate, Attach profileImg) {
+    public User(int id, String username, String password, String email, Date joinDate, String isDeleted, Date deletedDate) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -45,7 +42,6 @@ public class User {
         this.joinDate = joinDate;
         this.isDeleted = isDeleted;
         this.deletedDate = deletedDate;
-        this.profileImg = profileImg;
     }
 
     public int getId() {
@@ -104,13 +100,6 @@ public class User {
         this.deletedDate = deletedDate;
     }
 
-    public Attach getProfileImg() {
-        return profileImg;
-    }
-
-    public void setProfileImg(Attach profileImg) {
-        this.profileImg = profileImg;
-    }
 
     @Override
     public String toString() {
@@ -122,7 +111,6 @@ public class User {
                 ", joinDate=" + joinDate +
                 ", isDeleted='" + isDeleted + '\'' +
                 ", deletedDate=" + deletedDate +
-                ", profileImg=" + profileImg +
                 '}';
     }
 }
