@@ -5,7 +5,7 @@ import java.util.Map;
 public class ResultResponseMessage extends ResponseMessage{
     private Map<String , Object> results;
 
-    ResultResponseMessage(int httpStatus, String message, Map<String, Object> results){
+    public ResultResponseMessage(int httpStatus, String message, Map<String, Object> results){
         super(httpStatus, message);
         this.results = results;
     }
