@@ -2,22 +2,30 @@ package com.nebula.nebula_auth.helper.jwt;
 
 import com.nebula.nebula_auth.helper.jwt.dto.JwtDTO;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 public class JwtUtil {
-    @Value("${jwt.secret}")
-    private String secret;
-    @Value("${jwt.access-token-validity-in-seconds}")
-    private Integer accessExpireSecond;
+    private final Integer accessExpireSecond;
+    private final Key key;
+
+    public JwtUtil( @Value("${jwt.secret}") String secret,
+                    @Value("${jwt.access-token-validity-in-seconds}") int configExpireTime ) {
+        this.accessExpireSecond = configExpireTime;
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+    }
 
     /** token 에서 username 추출 */
     public String extractUsername(String token) {
@@ -50,7 +58,7 @@ public class JwtUtil {
     private Claims extractAllClaims(String token) {
         try {
             //Jwts parser를 최근 버전의 빌드패턴인 parserBuilder 로 변경하여 사용
-            return Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody();
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e){
             return e.getClaims();
         }
@@ -81,14 +89,14 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * accessExpireSecond))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+                .signWith(key, SignatureAlgorithm.HS256).compact();
     }
 
     /** 토큰의 유효성 검사 */
     public Boolean validateToken(String token, UserDetails userDetails) {
         try {
             // 토큰 파싱에서 오류가 발생하지 않는지 체크
-            Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             // 유저네임을 추출하여 해당 유저의 정보와 맞는지 && 토큰이 만료되었는지 체크
             final String username = extractUsername(token);
             return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
