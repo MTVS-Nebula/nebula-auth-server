@@ -1,5 +1,6 @@
 package com.nebula.nebula_auth.app.service.impl;
 
+import com.nebula.nebula_auth.app.dao.entity.LoginLog;
 import com.nebula.nebula_auth.app.dao.entity.Role;
 import com.nebula.nebula_auth.app.dao.entity.User;
 import com.nebula.nebula_auth.app.dao.entity.UserRole;
@@ -42,15 +43,6 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    public AuthServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, LoginLogRepository loginLogRepository, JwtUtil jwtUtil, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-//        this.userRepository = userRepository;
-//        this.userRoleRepository = userRoleRepository;
-//        this.loginLogRepository = loginLogRepository;
-//        this.jwtUtil = jwtUtil;
-//        this.roleRepository = roleRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
-
     @Override
     public boolean signUp(SignUpDTO signUpDTO) {
         try {
@@ -72,11 +64,12 @@ public class AuthServiceImpl implements AuthService {
                             loginDTO.getPassword()
                     )
             );
+            User user = userRepository.findByUsername(loginDTO.getUsername());
+            loginLogRepository.save(new LoginLog(0,user,new Date((new java.util.Date()).getTime())));
             return generateToken(loginDTO);
         } catch (Exception e){
             throw new RuntimeException("login 에러");
         }
-//        return null;
     }
 
     private User createUser(SignUpDTO signUpDTO){
