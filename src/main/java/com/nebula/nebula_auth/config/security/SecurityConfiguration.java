@@ -1,5 +1,7 @@
 package com.nebula.nebula_auth.config.security;
 
+import com.nebula.nebula_auth.config.security.jwt.JwtSecurityConfigureAdapter;
+import com.nebula.nebula_auth.helper.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +26,11 @@ import java.util.Arrays;
 @ComponentScan(basePackages = {"com.nebula.nebula_auth"})
 public class SecurityConfiguration {
     private final UserDetailsService userDetailsService;
+    private final JwtFilter jwtFilter;
 
-    public SecurityConfiguration(UserDetailsService userDetailsService) {
+    public SecurityConfiguration(UserDetailsService userDetailsService, JwtFilter jwtFilter) {
         this.userDetailsService = userDetailsService;
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean
@@ -65,16 +69,17 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/auth/**","/duplication/**").permitAll()
+                .antMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                .anyRequest().hasAuthority("MEMBER")
                 .and()
                 .exceptionHandling()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .cors();
+                .cors()
+                .and().apply(new JwtSecurityConfigureAdapter(jwtFilter));
 
         return http.build();
     }
