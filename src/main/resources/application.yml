@@ -4,11 +4,11 @@ server:
 
 #ConfigImport
 spring:
+  application:
+    name: nebula
   config:
     import:
-      - classpath:config-yml/datasource-config.yml #DataSource
-      - classpath:config-yml/aws-config.yml #S3Config
-      - classpath:config-yml/jwt-config.yml #JwtConfig
+      - optional:configserver:http://3.36.99.142:8001
 #JpaConfig
   jpa:
     hibernate:
