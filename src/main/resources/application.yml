@@ -22,3 +22,9 @@ spring:
     multipart:
       location: classpath:tempfile
 
+#Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
