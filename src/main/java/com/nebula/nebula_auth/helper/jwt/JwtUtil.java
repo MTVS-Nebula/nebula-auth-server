@@ -21,12 +21,18 @@ import java.util.stream.Collectors;
 public class JwtUtil {
     private final Integer accessExpireSecond;
     private final Key key;
+    private final String headerKey;
+    private final String prefix;
 
-    public JwtUtil( @Value("${jwt.secret}") String secret,
-                    @Value("${jwt.access-token-validity-in-seconds}") int configExpireTime ) {
+    public JwtUtil(@Value("${jwt.secret}") String secret,
+                   @Value("${jwt.access-token-validity-in-seconds}") int configExpireTime,
+                   @Value("${jwt.header}")String headerKey,
+                   @Value("${jwt.prefix}") String prefix) {
         this.accessExpireSecond = configExpireTime;
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.headerKey = headerKey;
+        this.prefix = prefix;
     }
 
     /** token 에서 username 추출 */
@@ -111,5 +117,13 @@ public class JwtUtil {
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("JWT 토큰이 잘못되었습니다.");
         }
+    }
+
+    public String getHeaderKey(){
+        return this.headerKey;
+    }
+
+    public String getPrefix(){
+        return this.prefix;
     }
 }

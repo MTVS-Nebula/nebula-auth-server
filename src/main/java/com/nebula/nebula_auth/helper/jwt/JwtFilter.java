@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@RefreshScope
+//@RefreshScope
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
@@ -27,11 +27,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
     @Autowired
-    public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService, @Value("${jwt.header}") String headerKey, @Value("${jwt.prefix}") String prefix) {
+    public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
-        this.headerKey = headerKey;
-        this.prefix = prefix;
+        this.headerKey = jwtUtil.getHeaderKey();
+        this.prefix = jwtUtil.getPrefix();
     }
 
     @Override
