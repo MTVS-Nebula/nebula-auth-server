@@ -10,7 +10,7 @@ spring:
     active: jwt, datasource
   config:
     import:
-      - optional:configserver:http://3.36.165.77:8001
+      - optional:configserver:http://3.36.67.38:8001
 #JpaConfig
   jpa:
     show-sql: true
