@@ -11,8 +11,6 @@ spring:
       - optional:configserver:http://3.36.99.142:8001
 #JpaConfig
   jpa:
-    hibernate:
-      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
