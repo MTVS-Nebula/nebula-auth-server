@@ -6,6 +6,8 @@ server:
 spring:
   application:
     name: nebula
+  profiles:
+    active: jwt, datasource
   config:
     import:
       - optional:configserver:http://3.36.99.142:8001
