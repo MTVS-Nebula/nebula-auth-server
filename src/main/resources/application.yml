@@ -21,6 +21,10 @@ spring:
   servlet:
     multipart:
       location: classpath:tempfile
+#Hikari Refresh
+  cloud:
+    refresh:
+      extra-refreshable: javax.sql.DataSource
 
 #Actuator
 management:
