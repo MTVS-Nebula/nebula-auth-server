@@ -10,7 +10,7 @@ spring:
     active: jwt, datasource
   config:
     import:
-      - optional:configserver:http://54.180.148.157:8001
+      - optional:configserver:http://ip-172-31-1-205.ap-northeast-2.compute.internal:8001
 #JpaConfig
   jpa:
     show-sql: true
