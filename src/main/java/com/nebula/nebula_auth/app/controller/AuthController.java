@@ -42,7 +42,16 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO){
-        String token = authService.login(loginDTO);
+        String token = null;
+
+        try {
+            token = authService.login(loginDTO);
+        } catch (RuntimeException e){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseMessage(HttpStatus.BAD_REQUEST.value(), "username/password is not valid"));
+        }
+
         if(token != null){
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("token", token);
