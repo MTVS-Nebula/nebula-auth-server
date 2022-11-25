@@ -7,10 +7,7 @@ import com.nebula.nebula_auth.helper.api.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -25,7 +22,7 @@ public class DupCheckController {
     }
 
 
-    @GetMapping("username")
+    @PostMapping("username")
     public ResponseEntity<?> getUsernameDuplicationCheck(@Valid @RequestBody UsernameDTO usernameDTO){
         boolean result = dupCheckService.checkUsername(usernameDTO.getUsername());
 
@@ -40,7 +37,7 @@ public class DupCheckController {
         }
     }
 
-    @GetMapping("email")
+    @PostMapping("email")
     public ResponseEntity<?> getEmailDuplicationCheck(@Valid @RequestBody EmailDTO emailDTO){
         boolean result = dupCheckService.checkEmail(emailDTO.getEmail());
 
