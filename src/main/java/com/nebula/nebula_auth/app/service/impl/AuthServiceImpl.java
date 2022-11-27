@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public String login(LoginDTO loginDTO) {
         String token = null;
         try {
