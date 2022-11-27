@@ -7,7 +7,7 @@ spring:
   application:
     name: nebula
   profiles:
-    active: jwt, datasource
+    active: jwt, datasource, aws
   config:
     import:
       - optional:configserver:http://ip-172-31-1-205.ap-northeast-2.compute.internal:8001

@@ -69,7 +69,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**","/duplication/**").permitAll()
+                .antMatchers("/auth/**","/duplication/**","/verification/**").permitAll()
                 .antMatchers("/admin/**","/actuator/**").hasAnyAuthority("ADMIN")
                 .anyRequest().hasAuthority("MEMBER")
                 .and()
