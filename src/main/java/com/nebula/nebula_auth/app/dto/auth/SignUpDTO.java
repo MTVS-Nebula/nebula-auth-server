@@ -10,14 +10,16 @@ public class SignUpDTO {
     private String password;
     @Email(message = "email 형식이 맞지 않습니다.")
     private String email;
+    private int verificationCode;
 
     public SignUpDTO() {
     }
 
-    public SignUpDTO(String username, String password, String email) {
+    public SignUpDTO(String username, String password, String email, int verificationCode) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.verificationCode = verificationCode;
     }
 
     public String getUsername() {
@@ -44,12 +46,21 @@ public class SignUpDTO {
         this.email = email;
     }
 
+    public int getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(int verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
     @Override
     public String toString() {
         return "SignUpDTO{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", verificationCode='" + verificationCode + '\'' +
                 '}';
     }
 }
