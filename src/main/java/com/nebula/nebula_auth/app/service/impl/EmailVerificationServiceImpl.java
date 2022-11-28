@@ -3,24 +3,24 @@ package com.nebula.nebula_auth.app.service.impl;
 import com.nebula.nebula_auth.app.dao.entity.EmailVerificationCode;
 import com.nebula.nebula_auth.app.dao.repository.EmailVerificationCodeRepository;
 import com.nebula.nebula_auth.app.service.EmailVerificationService;
-import com.nebula.nebula_auth.helper.mail.service.SendEmailService;
+import com.nebula.nebula_auth.helper.mail.service.GoogleSmtpService;
+//import com.nebula.nebula_auth.helper.mail.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @Service
 public class EmailVerificationServiceImpl implements EmailVerificationService {
-    private final SendEmailService sendEmailService;
+    private final GoogleSmtpService googleSmtpService;
     private final EmailVerificationCodeRepository emailVerificationCodeRepository;
 
     @Autowired
-    public EmailVerificationServiceImpl(SendEmailService sendEmailService,
-                                        EmailVerificationCodeRepository emailVerificationCodeRepository) {
-        this.sendEmailService = sendEmailService;
+    public EmailVerificationServiceImpl(
+                                        GoogleSmtpService googleSmtpService, EmailVerificationCodeRepository emailVerificationCodeRepository) {
+        this.googleSmtpService = googleSmtpService;
         this.emailVerificationCodeRepository = emailVerificationCodeRepository;
     }
 
@@ -102,6 +102,6 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
                 "</body>\n" +
                 "</html>";
         List<String> receivers = List.of(email);
-        sendEmailService.send("[52Hertz] 인증코드",content,receivers);
+        googleSmtpService.send("[52Hertz] 인증코드",content,receivers);
     }
 }
