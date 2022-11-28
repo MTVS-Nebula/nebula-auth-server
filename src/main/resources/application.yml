@@ -17,6 +17,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: official.52hertz@gmail.com
+    password: sefyoqhecokygyzb
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 #Multipart
   servlet:
     multipart:
@@ -32,3 +44,4 @@ management:
     web:
       exposure:
         include: refresh
+
