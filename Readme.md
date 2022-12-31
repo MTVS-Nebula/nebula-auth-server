@@ -6,6 +6,7 @@ RestAPI 로 Unity Client 와 데이터를 송수신하며 유저의 정보와 �
 <b>배포 주소 </b> : https://auth.mtvs-nebula.com
 
 ### 아키텍처
+![](https://cdn.discordapp.com/attachments/912599924036735019/1058704592705163274/infra.png)
 - github hooks / Jenkins를 이용해 개발 서버, 배포서버 CI/CD
 
 ### 구현 목표
